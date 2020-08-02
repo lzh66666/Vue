@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <todo>
+        {{title}}
+        <todo-title slot="todo-title" :title="title"></todo-title>
+        <!--<todo-items slot="todo-items" v-for="{item,index} in todoItems" v-bind:item="item"></todo-items>-->
+        <!--如下为简写-->
+        <todo-items slot="todo-items" v-for="(item,index) in todoItems"
+                    :index="index" :item="item" @remove="removeItems"></todo-items>
+        <div>你好啊</div>
+        <div>你好啊</div>
+        <div>你好啊</div>
+        <div slot="aaa">你好你好</div>
+    </todo>
+</div>
+
+<!--1.导入Vue.js-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+<script type="text/javascript">
+    // slot:插槽
+    Vue.component('todo',{
+        template:'  <div>\
+                        <slot name="todo-title"></slot>\
+                        <ul>\
+                            <slot name="todo-items"></slot>\
+                        </ul>\
+                        \<h1><slot></slot></h1>\
+                        \<h2><slot name="aaa"></slot></h2>\
+                   </div>'
+    });
+
+    Vue.component('todo-title',{
+        props:['title'],
+        template:'<div>{{title}}</div>'
+    });
+
+    //这里的index，就是数组的下标，使用for循环遍历的时候，可以循环出来！
+    Vue.component("todo-items",{
+        props:["item",'index'],
+        template:`<li>{{index}}——{{item}}<button @click="remove">删除</button></li>`,
+        methods: {
+            remove(index) {
+                this.$emit('remove',index)
+            }
+        }
+    });
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            title:"秦老师系列课程",
+            todoItems:['狂神说java','狂神说前端','狂神说运维']
+        },
+        methods: {
+            removeItems(index) {
+                console.log("删除了" + this.todoItems[index] + "OK")
+                this.todoItems.splice(index,1)//一次删除一个元素
+            }
+        }
+    });
+</script>
+</body>
+</html>

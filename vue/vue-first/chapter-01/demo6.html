@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<div id="app">
+    <!--组件，传递给组件中的值：props-->
+    <cpn v-for="item in items" v-bind:item="item"/>
+</div>
+
+
+<!--1.导入vue.js-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+<script>
+    // 定义一个vue组件component组件
+    Vue.component("cpn",{
+        props: ['item'],
+        template:  `<li>{{item}}</li>`
+    })
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            items: ['Java','Linux','前端']
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-binf="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--v-cloak 解决闪烁问题-->
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="vue" v-cloak>
+    <div>地名：{{info.name}}</div>
+    <div>地址：{{info.address.country}}--{{info.address.city}}--{{info.address.street}}</div>
+    <div>链接：<a v-bind:href="info.url" target="_blank">{{info.url}}</a> </div>
+</div>
+
+<!--引入js文件-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el:"#vue",
+        //data：属性：vm
+        data(){
+            return{
+                info:{
+                    name:null,
+                    address:{
+                        country:null,
+                        city:null,
+                        street:null
+                    },
+                    url:null
+                }
+            }
+        },
+        mounted(){//钩子函数,链式编程 ES6新特性
+            axios.get('../data.json').then(response=>(this.info=response.data));
+        }
+    });
+</script>
+
+
+</body>
+</html>
